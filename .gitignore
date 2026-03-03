@@ -1,0 +1,11 @@
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*~
