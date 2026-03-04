@@ -30,7 +30,7 @@ def generate_launch_description():
     # Launch Gazebo WITH the custom world
     gazeboLaunch = IncludeLaunchDescription(
         gazebo_rosPackageLaunch,
-        launch_arguments={'gz_args': f'-r {worldFile}', 'on_exit_shutdown': 'true'}.items()
+        launch_arguments={'gz_args': f'-s-r {worldFile}', 'on_exit_shutdown': 'true'}.items()
     )
 
     # gazebo spawner node

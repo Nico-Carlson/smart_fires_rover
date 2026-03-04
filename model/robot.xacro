@@ -129,27 +129,52 @@
         <xacro:inertia_wheel/>
     </link>
 
-    <joint name="caster_joint" type="fixed">
-        <parent link="body_link"/>
-        <child link="caster_link"/>
-        <origin xyz="${s3} 0 ${r}" rpy="0 0 0"/>
-    </joint>
+    <xacro:macro name="steering_knuckle" params="prefix x y">
+        <joint name="${prefix}_steer_joint" type="revolute">
+            <parent link="body_link"/>
+            <child link="${prefix}_steer_link"/>
+            <origin xyz="${x} ${y} ${r}" rpy="0 0 0"/>
+            <axis xyz="0 0 1"/>
+            <limit lower="-0.785" upper="0.785" effort="5000" velocity="5.0"/>
+            <dynamics damping="1.0" friction="2.0"/>
+        </joint>
 
-    <link name="caster_link">
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <sphere radius="${r}"/>
-            </geometry>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <sphere radius="${r}"/>
-            </geometry>
-        </collision>
-        <xacro:inertia_caster/>
-    </link>
+        <link name="${prefix}_steer_link">
+            <inertial>
+                <mass value="20.0"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+            </inertial>
+        </link>
+
+        <joint name="${prefix}_wheel_joint" type="continuous">
+            <parent link="${prefix}_steer_link"/>
+            <child link="${prefix}_wheel_link"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="50000" velocity="10"/>
+            <dynamics damping="1.0" friction="1.0"/>
+        </joint>
+
+        <link name="${prefix}_wheel_link">
+            <visual>
+                <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <cylinder length="${d}" radius="${r}"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <cylinder length="${d}" radius="${r}"/>
+                </geometry>
+            </collision>
+            <xacro:inertia_wheel/>
+        </link>
+    </xacro:macro>
+
+    <xacro:steering_knuckle prefix="front_left" x="${s3}" y="${s4}"/>
+    <xacro:steering_knuckle prefix="front_right" x="${s3}" y="${-s4}"/>
 
     <joint name="lidar_joint" type="fixed">
         <origin xyz="0.0 0 ${b+r}" rpy="0 0 0"/>
@@ -189,7 +214,6 @@
     <joint name="imu_joint" type="fixed">
         <parent link="body_link"/>
         <child link="imu_link"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
+        <origin xyz="0 0 ${s1}" rpy="0 0 0"/> </joint>
 
 </robot>
