@@ -96,25 +96,25 @@ controller_server:
       stateful: True
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.25
-      yaw_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.40
 
     FollowPath:
       plugin: "nav2_mppi_controller::MPPIController"
       time_steps: 30
       model_dt: 0.05
       batch_size: 801
-      ax_max: 1.0
-      ax_min: -1.0
+      ax_max: 0.6
+      ax_min: -0.6
       ay_max: 0.0
       ay_min: 0.0
-      az_max: 1.0
+      az_max: 6.0
       vx_std: 1.0
       vy_std: 0.0
-      wz_std: 1.0
-      vx_max: 1.5
+      wz_std: 1.2
+      vx_max: 0.65
       vx_min: -0.35
       vy_max: 0.0
-      wz_max: 1.9
+      wz_max: 2.5   # this may need to be lowered (servo turning speed)
       iteration_count: 1
       prune_distance: 1.7
       transform_tolerance: 1.5
@@ -163,7 +163,7 @@ controller_server:
       PathAlignCritic:
         enabled: true
         cost_power: 1
-        cost_weight: 14.0
+        cost_weight: 2.0
         max_path_occupancy_ratio: 0.05
         trajectory_point_step: 4
         threshold_to_consider: 0.5
@@ -172,7 +172,7 @@ controller_server:
       PathFollowCritic:
         enabled: true
         cost_power: 1
-        cost_weight: 5.0
+        cost_weight: 15.0
         offset_from_furthest: 5
         threshold_to_consider: 1.4
       PathAngleCritic:
@@ -196,7 +196,7 @@ local_costmap:
       width: 10
       height: 10
       resolution: 0.05
-      footprint: '[ [0.55, 0.35], [0.55, -0.35], [-0.55, -0.35], [-0.55, 0.35] ]'
+      footprint: '[ [0.56, 0.28], [0.56, -0.28], [-0.56, -0.28], [-0.56, 0.28] ]'
       plugins: ["obstacle_layer", "inflation_layer"]
 
       obstacle_layer:
@@ -231,7 +231,7 @@ global_costmap:
       global_frame: map
       robot_base_frame: base_footprint
       use_sim_time: True
-      footprint: '[ [0.55, 0.35], [0.55, -0.35], [-0.55, -0.35], [-0.55, 0.35] ]'
+      footprint: '[ [0.56, 0.28], [0.56, -0.28], [-0.56, -0.28], [-0.56, 0.28] ]'
       resolution: 0.05
       track_unknown_space: true
 

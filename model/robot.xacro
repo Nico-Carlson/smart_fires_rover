@@ -3,25 +3,23 @@
 
     <xacro:property name="pi_const" value="3.14159265"/>
 
-    <xacro:property name="a" value="1.0"  />
-    <xacro:property name="b" value="0.3" />
-    <xacro:property name="c" value="0.6"/>
+    <xacro:property name="a" value="1.1176" />
+    <xacro:property name="b" value="0.4572" />
+    <xacro:property name="c" value="0.562" />
 
-    <xacro:property name="r" value="0.15"/>
-    <xacro:property name="d" value="0.1"/>
+    <xacro:property name="r" value="0.15875" />
+    <xacro:property name="d" value="0.1016" />
 
-    <xacro:property name="s1" value="${b/2+r}"/>
-    <xacro:property name="s2" value="${2*r}"/>
-    <xacro:property name="s3" value="${2*r}"/>
-    <xacro:property name="s4" value="${c/2+d/2}"/>
+    <xacro:property name="s1" value="0.4318" />
 
-    <xacro:property name="d1" value="2710.0"/>
-    <xacro:property name="d2" value="2710.0"/>
-    <xacro:property name="d3" value="2710.0"/>
+    <xacro:property name="s2" value="0.3429" />
+    <xacro:property name="s3" value="0.3429" />
 
-    <xacro:property name="m1" value="${d1*a*b*c}"/>
-    <xacro:property name="m2" value="${d1*pi_const*r*r*d}"/>
-    <xacro:property name="m3" value="${d3*(4.0/3.0)*pi_const*r*r*r}"/>
+    <xacro:property name="s4" value="0.2794" />
+
+    <xacro:property name="m1" value="40.0" />
+    <xacro:property name="m2" value="3.0" />
+
 
     <xacro:property name="Ix_body" value="${(1/12)*m1*(b*b+c*c)}"/>
     <xacro:property name="Iy_body" value="${(1/12)*m1*(a*a+b*b)}"/>
@@ -29,7 +27,6 @@
 
     <xacro:property name="Iz_wheel" value="${0.5*m2*r*r}"/>
     <xacro:property name="I_wheel" value="${(1.0/12.0)*m2*(3.0*r*r+d*d)}"/>
-    <xacro:property name="I_caster" value="${(2.0/5.0)*m3*r*r}"/>
 
     <xacro:macro name="inertia_body">
         <inertial>
@@ -47,14 +44,6 @@
         </inertial>
     </xacro:macro>
 
-    <xacro:macro name="inertia_caster">
-        <inertial>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-        <mass value="${m3}"/>
-        <inertia ixx="${I_caster}" ixy="0.0" ixz="0.0" iyy="${I_caster}" iyz="0" izz="${I_caster}"/>
-        </inertial>
-    </xacro:macro>
-
     <xacro:include filename="$(find mobile_robot)/model/robot.gazebo"/>
 
     <link name="base_footprint"> </link>
@@ -66,7 +55,7 @@
     <link name="body_link">
         <visual>
             <geometry>
-                <box size="${a} ${c} ${b}"/>
+                <box size="${a} ${b} ${c}"/>
             </geometry>
         <origin rpy="0 0 0" xyz="0 0 ${s1}"/>
         </visual>
@@ -177,7 +166,7 @@
     <xacro:steering_knuckle prefix="front_right" x="${s3}" y="${-s4}"/>
 
     <joint name="lidar_joint" type="fixed">
-        <origin xyz="0.0 0 ${b+r}" rpy="0 0 0"/>
+        <origin xyz="0.0 0 ${s1 + (c/2)}" rpy="0 0 0"/>
         <parent link="body_link"/>
         <child link="lidar_link"/>
     </joint>
