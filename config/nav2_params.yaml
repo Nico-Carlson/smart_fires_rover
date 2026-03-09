@@ -95,8 +95,8 @@ controller_server:
     general_goal_checker:
       stateful: True
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.25
-      yaw_goal_tolerance: 0.40
+      xy_goal_tolerance: 0.50
+      yaw_goal_tolerance: 0.75
 
     FollowPath:
       plugin: "nav2_mppi_controller::MPPIController"
@@ -112,9 +112,9 @@ controller_server:
       vy_std: 0.0
       wz_std: 1.2
       vx_max: 0.65
-      vx_min: -0.35
+      vx_min: -0.45
       vy_max: 0.0
-      wz_max: 2.5   # this may need to be lowered (servo turning speed)
+      wz_max: 1.0   # this may need to be lowered (servo turning speed)
       iteration_count: 1
       prune_distance: 1.7
       transform_tolerance: 1.5
@@ -148,7 +148,7 @@ controller_server:
       PreferForwardCritic:
         enabled: true
         cost_power: 1
-        cost_weight: 5.0
+        cost_weight: 1.5
         threshold_to_consider: 0.5
       CostCritic:
         enabled: true
@@ -219,7 +219,7 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 1.0
-        inflation_radius: 2.5
+        inflation_radius: 1.5
 
       always_send_full_costmap: True
 
@@ -263,7 +263,7 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 1.0
-        inflation_radius: 2.5
+        inflation_radius: 1.5
 
 # The yaml_filename does not need to be specified since it going to be set by defaults in launch.
 # If you'd rather set it in the yaml, remove the default "map" value in the tb3_simulation_launch.py
@@ -286,11 +286,12 @@ planner_server:
     costmap_update_timeout: 1.0
     GridBased:
       plugin: "nav2_smac_planner::SmacPlannerHybrid"
+      motion_model_for_search: "REEDS_SHEPP"
       tolerance: 0.8
       downsample_costmap: false
       allow_unknown: true
       minimum_turning_radius: 0.8
-      reverse_penalty: 1.4
+      reverse_penalty: 2.5
       penalty_multiplier: 4.0
 
 smoother_server:
@@ -371,7 +372,7 @@ velocity_smoother:
     feedback: "OPEN_LOOP"
     max_velocity: [1.5, 0.0, 2.0]
     min_velocity: [-0.5, 0.0, -2.0]
-    max_accel: [2.5, 0.0, 3.2]
+    max_accel: [2.5, 0.0, 6.0]
     max_decel: [-2.5, 0.0, -3.2]
     odom_topic: "odom"
     odom_duration: 0.1

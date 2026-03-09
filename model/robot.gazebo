@@ -49,6 +49,10 @@
             <wheel_radius>${r}</wheel_radius>
             <steering_limit>0.785</steering_limit>
 
+            <steer_p_gain>300.0</steer_p_gain>
+            <steer_i_gain>0.0</steer_i_gain>
+            <steer_d_gain>100.0</steer_d_gain>
+
             <topic>/cmd_vel</topic>
             <odom_topic>/odom</odom_topic>
             <odom_publish_frequency>30</odom_publish_frequency>
